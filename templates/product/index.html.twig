@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produits{% endblock %}
+
+{% block content %}
+<h1>Nos produits</h1>
+<div class="row">
+{% for products in product  %}
+    <div class="col-md-4">
+        <div class="product-item">
+        <img src="/assets/images/{{products.illustration}}" alt="{{products.name}}" class="img-fluid">
+            <h5>{{products.name}}</h5>
+            <span> {{products.subtitle}} </span>
+            {{products.price}}
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
