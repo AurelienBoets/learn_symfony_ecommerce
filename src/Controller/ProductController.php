@@ -15,13 +15,24 @@ class ProductController extends AbstractController
     {
         $this->manager=$manager;
     }
-    #[Route('/produits', name: 'product')]
+    #[Route('/produits', name: 'products')]
     public function index(): Response
     {
-        $product=$this->manager->getRepository(Product::class)->findAll();
+        $products=$this->manager->getRepository(Product::class)->findAll();
 
         return $this->render('product/index.html.twig',[
-            "product"=>$product
+            "product"=>$products
+        ]);
+    }
+    #[Route('/produit/{slug}', name: 'product')]
+    public function show($slug): Response
+    {
+        $product=$this->manager->getRepository(Product::class)->findOneBySlug($slug);
+        if(!$product){
+            return $this->redirectToRoute("products");
+        }
+        return $this->render('product/show.html.twig',[
+            "oneProduct"=>$product
         ]);
     }
 }
