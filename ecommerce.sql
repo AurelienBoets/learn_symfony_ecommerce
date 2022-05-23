@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 05 mai 2022 à 16:58
+-- Généré le : lun. 23 mai 2022 à 16:51
 -- Version du serveur : 10.4.20-MariaDB
 -- Version de PHP : 8.0.9
 
@@ -20,6 +20,54 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `ecommerce`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `address`
+--
+
+CREATE TABLE `address` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `firstname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `postal` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `address`
+--
+
+INSERT INTO `address` (`id`, `user_id`, `name`, `firstname`, `lastname`, `company`, `address`, `postal`, `city`, `country`, `phone`) VALUES
+(1, 2, 'Maison 1', 'Jean', 'Delarue', NULL, '20 rue du chandelier', '78999', 'City', 'FR', '06060660606'),
+(5, 2, 'Société', 'Jean', 'Delarue', 'Sandwich', '56 rue de la nourriture', '78665', 'Haute', 'FR', '033333333333333');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `carrier`
+--
+
+CREATE TABLE `carrier` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `carrier`
+--
+
+INSERT INTO `carrier` (`id`, `name`, `description`, `price`) VALUES
+(1, 'Colissimo', 'Profitez d\'une livraison premium avec un colis chez vous dans 72 prochaines heures', 9.9);
 
 -- --------------------------------------------------------
 
@@ -62,7 +110,40 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20220503105758', '2022-05-03 14:31:20', 179),
 ('DoctrineMigrations\\Version20220503142643', '2022-05-03 16:27:05', 94),
 ('DoctrineMigrations\\Version20220505075534', '2022-05-05 09:55:52', 215),
-('DoctrineMigrations\\Version20220505090542', '2022-05-05 11:05:48', 694);
+('DoctrineMigrations\\Version20220505090542', '2022-05-05 11:05:48', 694),
+('DoctrineMigrations\\Version20220523083032', '2022-05-23 10:31:25', 109),
+('DoctrineMigrations\\Version20220523132027', '2022-05-23 15:21:03', 54),
+('DoctrineMigrations\\Version20220523142551', '2022-05-23 16:26:13', 156);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `order`
+--
+
+CREATE TABLE `order` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `carrier_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `carrier_price` double NOT NULL,
+  `delivery` longtext COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `order_details`
+--
+
+CREATE TABLE `order_details` (
+  `id` int(11) NOT NULL,
+  `my_order_id` int(11) NOT NULL,
+  `product` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` double NOT NULL,
+  `total` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -122,6 +203,19 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `first_name`, `last_name
 --
 
 --
+-- Index pour la table `address`
+--
+ALTER TABLE `address`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_D4E6F81A76ED395` (`user_id`);
+
+--
+-- Index pour la table `carrier`
+--
+ALTER TABLE `carrier`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `category`
 --
 ALTER TABLE `category`
@@ -132,6 +226,20 @@ ALTER TABLE `category`
 --
 ALTER TABLE `doctrine_migration_versions`
   ADD PRIMARY KEY (`version`);
+
+--
+-- Index pour la table `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_F5299398A76ED395` (`user_id`);
+
+--
+-- Index pour la table `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_845CA2C1BFCDF877` (`my_order_id`);
 
 --
 -- Index pour la table `product`
@@ -152,10 +260,34 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT pour la table `address`
+--
+ALTER TABLE `address`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT pour la table `carrier`
+--
+ALTER TABLE `carrier`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT pour la table `category`
 --
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `order`
+--
+ALTER TABLE `order`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `product`
@@ -172,6 +304,24 @@ ALTER TABLE `user`
 --
 -- Contraintes pour les tables déchargées
 --
+
+--
+-- Contraintes pour la table `address`
+--
+ALTER TABLE `address`
+  ADD CONSTRAINT `FK_D4E6F81A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Contraintes pour la table `order`
+--
+ALTER TABLE `order`
+  ADD CONSTRAINT `FK_F5299398A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Contraintes pour la table `order_details`
+--
+ALTER TABLE `order_details`
+  ADD CONSTRAINT `FK_845CA2C1BFCDF877` FOREIGN KEY (`my_order_id`) REFERENCES `order` (`id`);
 
 --
 -- Contraintes pour la table `product`

@@ -40,3 +40,7 @@ body {
   height: 20px;
   padding-left: 10px;
 }
+.small-block {
+  max-width: 600px;
+  margin: 0 auto;
+}
