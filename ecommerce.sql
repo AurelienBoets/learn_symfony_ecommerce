@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 23 mai 2022 à 16:51
+-- Généré le : mar. 24 mai 2022 à 16:48
 -- Version du serveur : 10.4.20-MariaDB
 -- Version de PHP : 8.0.9
 
@@ -47,7 +47,8 @@ CREATE TABLE `address` (
 
 INSERT INTO `address` (`id`, `user_id`, `name`, `firstname`, `lastname`, `company`, `address`, `postal`, `city`, `country`, `phone`) VALUES
 (1, 2, 'Maison 1', 'Jean', 'Delarue', NULL, '20 rue du chandelier', '78999', 'City', 'FR', '06060660606'),
-(5, 2, 'Société', 'Jean', 'Delarue', 'Sandwich', '56 rue de la nourriture', '78665', 'Haute', 'FR', '033333333333333');
+(5, 2, 'Société', 'Jean', 'Delarue', 'Sandwich', '56 rue de la nourriture', '78665', 'Haute', 'FR', '033333333333333'),
+(7, 11, 'ezrrz', 'zerzer', 'zerzrz', NULL, 'zerzr', '99898', 'zerzer', 'AZ', '58958549845856');
 
 -- --------------------------------------------------------
 
@@ -67,7 +68,8 @@ CREATE TABLE `carrier` (
 --
 
 INSERT INTO `carrier` (`id`, `name`, `description`, `price`) VALUES
-(1, 'Colissimo', 'Profitez d\'une livraison premium avec un colis chez vous dans 72 prochaines heures', 9.9);
+(1, 'Colissimo', 'Profitez d\'une livraison premium avec un colis chez vous dans 72 prochaines heures', 9.9),
+(2, 'Chronopost', 'Profitez de la livraison express pour être livré dès le lendemain de votre commande entre 8h et 20h.', 14.9);
 
 -- --------------------------------------------------------
 
@@ -113,7 +115,8 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20220505090542', '2022-05-05 11:05:48', 694),
 ('DoctrineMigrations\\Version20220523083032', '2022-05-23 10:31:25', 109),
 ('DoctrineMigrations\\Version20220523132027', '2022-05-23 15:21:03', 54),
-('DoctrineMigrations\\Version20220523142551', '2022-05-23 16:26:13', 156);
+('DoctrineMigrations\\Version20220523142551', '2022-05-23 16:26:13', 156),
+('DoctrineMigrations\\Version20220524081928', '2022-05-24 10:19:46', 169);
 
 -- --------------------------------------------------------
 
@@ -127,8 +130,16 @@ CREATE TABLE `order` (
   `created_at` datetime NOT NULL,
   `carrier_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `carrier_price` double NOT NULL,
-  `delivery` longtext COLLATE utf8mb4_unicode_ci NOT NULL
+  `delivery` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_paid` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `order`
+--
+
+INSERT INTO `order` (`id`, `user_id`, `created_at`, `carrier_name`, `carrier_price`, `delivery`, `is_paid`) VALUES
+(3, 2, '2022-05-24 11:54:03', 'Colissimo', 9.9, 'JeanDelarue<br>06060660606<br>20 rue du chandelier<br>78999City<br>FR', 0);
 
 -- --------------------------------------------------------
 
@@ -144,6 +155,13 @@ CREATE TABLE `order_details` (
   `price` double NOT NULL,
   `total` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `order_details`
+--
+
+INSERT INTO `order_details` (`id`, `my_order_id`, `product`, `quantity`, `price`, `total`) VALUES
+(2, 3, 'Bonnet bleu', 1, 1000, 1000);
 
 -- --------------------------------------------------------
 
@@ -196,7 +214,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `first_name`, `last_name`) VALUES
-(2, 'delarue@mail.fr', '[]', '$2y$13$lav7BwLNQRRpkr4AAGZBXeDNz1qMevvknIOzOHDtNLUruhXFVHeyu', 'Jean', 'Delarue');
+(2, 'delarue@mail.fr', '[]', '$2y$13$lav7BwLNQRRpkr4AAGZBXeDNz1qMevvknIOzOHDtNLUruhXFVHeyu', 'Jean', 'Delarue'),
+(11, 'azer@mail.fr', '[]', '$2y$13$HHvE2B/je1TXBio/j6SeQuXUXz317EVUcFnolWv2t1qJbk88owcKS', 'john', 'doe');
 
 --
 -- Index pour les tables déchargées
@@ -263,13 +282,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `carrier`
 --
 ALTER TABLE `carrier`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `category`
@@ -281,13 +300,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT pour la table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `product`
@@ -299,7 +318,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Contraintes pour les tables déchargées

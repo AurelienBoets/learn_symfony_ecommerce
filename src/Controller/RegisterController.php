@@ -30,8 +30,7 @@ class RegisterController extends AbstractController
             $user->setPassword($password);
             $this->manager->persist($user);
             $this->manager->flush();
-            
-            
+            return $this->redirectToRoute('app_login');
         }
         return $this->renderForm('register/index.html.twig', ['form'=>$form]);
     }
