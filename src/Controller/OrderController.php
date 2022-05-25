@@ -36,7 +36,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/commande/recapitulatif', name: 'order_recap',methods:["POST"])]
+    #[Route('/commande/recapitulatif', name: 'order_recap')]
     public function add(Cart $cart,Request $request): Response
     {
         if(!$this->getUser()->getAddresses()->getValues()){
@@ -59,6 +59,8 @@ class OrderController extends AbstractController
             $deliverycontent .='<br>'.$delivery->getPostal().''.$delivery->getCity();
             $deliverycontent .='<br>'.$delivery->getCountry();
             $order=new Order();
+            $reference=$date->format('dmY').'-'.uniqid();
+            $order->setReference($reference);
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setCarrierName($carriers->getName());
@@ -77,12 +79,18 @@ class OrderController extends AbstractController
                 $this->manager->persist($orderDetails);
             }
             $this->manager->flush();
+            
+            
+               
             return $this->render('order/add.html.twig',[
                 'cart'=>$cart->getFull(),
                 'carrier'=>$carriers,
-                'delivery'=>$deliverycontent
+                'delivery'=>$deliverycontent,
+                'reference'=>$order->getReference()
             ]);
+            
         }
         return $this->redirectToRoute('cart');
     }
+    
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 24 mai 2022 à 16:48
+-- Généré le : mer. 25 mai 2022 à 16:37
 -- Version du serveur : 10.4.20-MariaDB
 -- Version de PHP : 8.0.9
 
@@ -116,7 +116,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20220523083032', '2022-05-23 10:31:25', 109),
 ('DoctrineMigrations\\Version20220523132027', '2022-05-23 15:21:03', 54),
 ('DoctrineMigrations\\Version20220523142551', '2022-05-23 16:26:13', 156),
-('DoctrineMigrations\\Version20220524081928', '2022-05-24 10:19:46', 169);
+('DoctrineMigrations\\Version20220524081928', '2022-05-24 10:19:46', 169),
+('DoctrineMigrations\\Version20220525131203', '2022-05-25 15:12:26', 45),
+('DoctrineMigrations\\Version20220525140317', '2022-05-25 16:03:25', 43);
 
 -- --------------------------------------------------------
 
@@ -131,15 +133,22 @@ CREATE TABLE `order` (
   `carrier_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `carrier_price` double NOT NULL,
   `delivery` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_paid` tinyint(1) NOT NULL
+  `is_paid` tinyint(1) NOT NULL,
+  `reference` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_session_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `order`
 --
 
-INSERT INTO `order` (`id`, `user_id`, `created_at`, `carrier_name`, `carrier_price`, `delivery`, `is_paid`) VALUES
-(3, 2, '2022-05-24 11:54:03', 'Colissimo', 9.9, 'JeanDelarue<br>06060660606<br>20 rue du chandelier<br>78999City<br>FR', 0);
+INSERT INTO `order` (`id`, `user_id`, `created_at`, `carrier_name`, `carrier_price`, `delivery`, `is_paid`, `reference`, `stripe_session_id`) VALUES
+(3, 2, '2022-05-24 11:54:03', 'Colissimo', 9.9, 'JeanDelarue<br>06060660606<br>20 rue du chandelier<br>78999City<br>FR', 0, '', NULL),
+(4, 2, '2022-05-25 15:32:55', 'Chronopost', 14.9, 'JeanDelarue<br>06060660606<br>20 rue du chandelier<br>78999City<br>FR', 0, '25052022-628e3007149d2', NULL),
+(5, 2, '2022-05-25 15:41:10', 'Chronopost', 14.9, 'JeanDelarue<br>06060660606<br>20 rue du chandelier<br>78999City<br>FR', 0, '25052022-628e31f66f350', NULL),
+(6, 2, '2022-05-25 15:45:28', 'Chronopost', 14.9, 'JeanDelarue<br>06060660606<br>20 rue du chandelier<br>78999City<br>FR', 0, '25052022-628e32f871bfe', NULL),
+(7, 2, '2022-05-25 15:58:16', 'Chronopost', 14.9, 'JeanDelarue<br>06060660606<br>20 rue du chandelier<br>78999City<br>FR', 0, '25052022-628e35f89c750', NULL),
+(8, 2, '2022-05-25 16:13:47', 'Chronopost', 14.9, 'JeanDelarue<br>06060660606<br>20 rue du chandelier<br>78999City<br>FR', 1, '25052022-628e399ba4b9f', 'cs_test_b1uB0TXTwuC8r0Ay9oAoj2kjp02QX0yHcJTyilFbNpmgX3n3Da6hEIU8sB');
 
 -- --------------------------------------------------------
 
@@ -161,7 +170,12 @@ CREATE TABLE `order_details` (
 --
 
 INSERT INTO `order_details` (`id`, `my_order_id`, `product`, `quantity`, `price`, `total`) VALUES
-(2, 3, 'Bonnet bleu', 1, 1000, 1000);
+(2, 3, 'Bonnet bleu', 1, 1000, 1000),
+(3, 4, 'Echarpe rouge', 1, 5000, 5000),
+(4, 5, 'Echarpe rouge', 1, 5000, 5000),
+(5, 6, 'Echarpe rouge', 1, 5000, 5000),
+(6, 7, 'Echarpe rouge', 1, 5000, 5000),
+(7, 8, 'Echarpe rouge', 1, 5000, 5000);
 
 -- --------------------------------------------------------
 
@@ -300,13 +314,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT pour la table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `product`

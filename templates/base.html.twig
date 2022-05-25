@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Boutique">
     <title>{% block title %}Boutique{% endblock %}</title>
-
+    {% block script %}{% endblock %}
+    {% block css %}{% endblock %}
     <!-- Bootstrap core CSS -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
 
@@ -124,5 +125,6 @@
 </main>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="{{asset('assets/js/bootstrap.bundle.js')}}"></script>
+{% block javascript %}{% endblock %}
 </body>
 </html>
