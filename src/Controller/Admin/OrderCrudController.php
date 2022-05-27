@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Order;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -31,7 +32,8 @@ class OrderCrudController extends AbstractCrudController
             DateField::new('created_at'),
             TextField::new('user.getFullName','User'),
             MoneyField::new('total')->setCurrency('EUR'),
-            BooleanField::new('isPaid')
+            BooleanField::new('isPaid'),
+            ArrayField::new('orderDetails','Produits achetés')->hideOnIndex()
         ];
     }
     

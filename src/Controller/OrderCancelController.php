@@ -8,28 +8,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OrderValidateController extends AbstractController
+class OrderCancelController extends AbstractController
 {
     private $manager;
     public function __construct(EntityManagerInterface $manager)
     {
         return $this->manager=$manager;
     }
-    #[Route('/commande/merci/{stripeSessionId}', name: 'app_order_validate')]
+
+    #[Route('/commande/erreur/{stripeSessionId}', name: 'order_cancel')]
     public function index($stripeSessionId): Response
     {
         $order=$this->manager->getRepository(Order::class)->findOneByStripeSessionId($stripeSessionId);
         if(!$order || $order->getUser()!=$this->getUser()){
             return $this->redirectToRoute('home');
         }
-        if(!$order->isIsPaid()){
-            $order->setIsPaid(1);
-            $this->manager->flush();
-        }
-        if($order->isIsPaid()){
-            $order->remove();
-        }
-        return $this->render('order_validate/index.html.twig',[
+        return $this->render('order_cancel/index.html.twig',[
             'order'=>$order
         ]);
     }

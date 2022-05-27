@@ -21,6 +21,17 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    public function findSuccesOrders($user)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.isPaid = 1')
+            ->andWhere('o.user = :user')
+            ->setParameter('user',$user)
+            ->orderBy('o.id','DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function add(Order $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
