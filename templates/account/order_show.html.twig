@@ -5,6 +5,14 @@
 {% block content %}
 <h1>Ma commande {{order.reference}}</h1>
 <a href="{{path('account_order')}}">Retour</a><hr>
+Statut de la commande : 
+{% if order.state == 1 %}
+  Paiement accepté
+{% elseif order.state == 2 %}
+  Préparation
+{% elseif order.state == 3 %}
+  Livraison en cours
+{% endif %} <br>
 Commande passée le : {{order.createdAt|date('d/m/Y')}} <br>
 Référence de la commande : <small>{{order.reference}}</small> <br>
 Transporteur choisi : {{order.carrierName}}

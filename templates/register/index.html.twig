@@ -4,6 +4,10 @@
 
 {% block content %}
 <h1>Inscription</h1>
+{% if notif %}
+    <div class="alert alert-info">{{notif}}</div>
+    <hr>
+{% endif %}
 {{form_start(form)}}
 {{form_rest(form)}}
 {{form_end(form)}}

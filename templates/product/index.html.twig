@@ -13,14 +13,7 @@ content %}
 	<div class="row product-container">
 		{% for products in product %}
 			<div class="col-md-4">
-				<div class="product-item text-center">
-					<a href="{{path("product",{slug:products.slug})}}"><img src="/assets/images/{{ products.illustration }}" alt="{{ products.name }}" class="img-fluid"/></a>
-					<h5>{{ products.name }}</h5>
-					<span class="product-subtitle">
-						{{ products.subtitle }}
-					</span>
-					<span class="product-price">{{ (products.price /100)|number_format(2,",",".") }} €</span> 
-				</div>
+				{% include "product/single_product.html.twig" %}
 			</div>
 		{% endfor %}
 	</div>
