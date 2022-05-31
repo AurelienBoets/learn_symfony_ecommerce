@@ -4,6 +4,9 @@ block content %}
 Bienvenue {{ app.user.firstname }} dans votre espace client. <br />C'est dans
 cet espace que vous allez gérer vos informations personnelles.
 <hr />
+{% if is_granted('ROLE_ADMIN') %}
+-<a href="{{path('admin')}}">Accéder au backoffice</a><br>
+{% endif %}
 -<a href="{{ path('account_password') }}">Modifier mon mot de passe</a><br />
 -<a href="{{ path('account_address') }}">Gérer mes adresses</a><br>
 -<a href="{{ path('account_order') }}">Mes commandes</a>

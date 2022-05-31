@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 30 mai 2022 à 16:58
+-- Généré le : mar. 31 mai 2022 à 10:33
 -- Version du serveur : 10.4.20-MariaDB
 -- Version de PHP : 8.0.9
 
@@ -287,7 +287,7 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `first_name`, `last_name
 (12, 'test.boutique@outlook.com', '[]', '$2y$13$R.LSrB5eSUq0CN.UxCGe8O23/lpJRfY3sxPh3d7hY4lEC3dGGw1Hy', 'John', 'Doe'),
 (13, 'aurelien.boets59@gmail.com', '[]', '$2y$13$CBmDr47qnrmpxQaH014eNeI2G2DLrCenvZZ3/bdr5Tm8tUhIOBJOm', 'azer', 'azer'),
 (14, 'boutique.test@outlook.com', '[]', '$2y$13$/ObhtPtr9eBObZoRgh0B0.TmugICkYUthuVg82uqNyra9jdK5I5Fe', 'azer', 'azer'),
-(15, 'clientrandom@outlook.com', '[]', '$2y$13$SBn46BpK9B0H.mSj8OdmIeayI048E7Xy0JR7Vl7/DCZJy85mLkYOy', 'client', 'random');
+(15, 'clientrandom@outlook.com', '[\"ROLE_ADMIN\"]', '$2y$13$SBn46BpK9B0H.mSj8OdmIeayI048E7Xy0JR7Vl7/DCZJy85mLkYOy', 'client', 'random');
 
 --
 -- Index pour les tables déchargées
